@@ -78,7 +78,8 @@ ALWAYS run these validation steps after making changes:
 │   ├── cdp.jl               # Narrative core: types, operators, solve, simulate
 │   ├── inner_solvers.jl     # Per-state inner maximization paths and sweeps
 │   ├── policy_system.jl     # Policy-evaluation collocation system assembly
-│   └── lq_approx.jl         # Linear quadratic approximation methods
+│   ├── lq_approx.jl         # Linear quadratic approximation methods
+│   └── kinked_breaks.jl     # [added] spline breakpoints with repeated knots for kinked value functions
 ├── ext/
 │   ├── ContinuousDPsPOMDPsExt.jl    # POMDPs.jl interface (weakdeps: POMDPs, POMDPTools)
 │   └── examples/
@@ -95,7 +96,8 @@ ALWAYS run these validation steps after making changes:
 │   ├── test_evaluate_policy.jl  # Policy-evaluation assembly tests
 │   ├── test_cdp.jl              # Tests for core CDP functionality
 │   ├── test_cdp_multidim.jl     # Tests for multi-dimensional CDP
-│   └── test_lq_approx.jl        # Tests for LQ approximation
+│   ├── test_lq_approx.jl        # Tests for LQ approximation
+│   └── test_kinked_breaks.jl    # [added] Tests for kinked_breaks
 ├── benchmark/
 │   ├── benchmarks.jl        # PkgBenchmark/BenchmarkTools suite (SUITE)
 │   ├── Project.toml         # Benchmark environment
@@ -104,6 +106,7 @@ ALWAYS run these validation steps after making changes:
 │   ├── cdp_ex_optgrowth_jl.ipynb    # Optimal growth model example
 │   ├── cdp_ex_MF_jl.ipynb           # Miranda & Fackler examples
 │   ├── cdp_ex_odu.jl                # Search with learning (belief MDP, callable weights)
+│   ├── cdp_ex_kink.jl               # [added] C^1 kink at a known location, solved with kinked_breaks
 │   └── lqapprox_jl.ipynb            # LQ approximation examples
 └── Project.toml             # Package dependencies and metadata
 ```

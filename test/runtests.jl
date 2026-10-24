@@ -18,3 +18,4 @@ include("test_multidim_actions.jl")
 include("test_cdp.jl")
 include("test_lq_approx.jl")
 include("test_cdp_multidim.jl")
+include("test_kinked_breaks.jl")  # [added]
