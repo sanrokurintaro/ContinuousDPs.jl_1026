@@ -16,11 +16,14 @@ include("transition_kernel.jl")
 include("inner_solvers.jl")
 include("policy_system.jl")
 include("lq_approx.jl")
+# [added] spline breakpoints with repeated knots for kinked value functions
+include("kinked_breaks.jl")
 
 export
     ContinuousDP, solve, VFI, PFI, LQA,
     CollocationSolver, LQASolver,
     ActionSpace, ContinuousActions, DiscreteActions, ActionInterval,
-    set_eval_nodes!, simulate, simulate!, approx_lq
+    set_eval_nodes!, simulate, simulate!, approx_lq,
+    kinked_breaks  # [added]
 
 end # module
