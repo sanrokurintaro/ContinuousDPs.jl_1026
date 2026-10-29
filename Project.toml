@@ -4,6 +4,7 @@ version = "0.4.0"
 
 [deps]
 BasisMatrices = "08854c51-b66b-5062-a90d-8e7ae4547a49"
+Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
 FiniteDiff = "6a86dc24-6348-571c-b903-95158fe2bd41"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 NLSolversBase = "d41bc354-129a-5804-8e4c-c37616107c6c"
@@ -21,6 +22,7 @@ ContinuousDPsPOMDPsExt = ["POMDPs", "POMDPTools"]
 
 [compat]
 BasisMatrices = "0.8"
+Distributions = "0.25.132"
 FiniteDiff = "2"
 LinearAlgebra = "1"
 NLSolversBase = "7.9, 8"
