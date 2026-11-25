@@ -49,12 +49,12 @@ simulate!
 approx_lq
 ```
 
-### Spline Breakpoints for Kinked Value Functions
+### Inserting Breakpoints (Kinked Value Functions)
 
 <!-- [added] helper documented here; usage in examples/cdp_ex_kink.jl -->
 
 ```@docs
-kinked_breaks
+insert_breaks
 ```
 
 ## Internal
