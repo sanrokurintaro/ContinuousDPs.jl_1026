@@ -1,6 +1,6 @@
 # A two-dimensional model whose value function has a C^1 kink at a known
-# location, approximated with `kinked_breaks` (a spline breakpoint of
-# multiplicity 2 at the kink).
+# location, approximated with `insert_breaks` (a spline breakpoint of
+# multiplicity 2 inserted at the kink).
 #
 # State s = (a, logy): assets and log income (AR(1)); action x = a', next
 # period's assets. A soft borrowing penalty
@@ -12,8 +12,8 @@
 # EXOGENOUS kink on an axis of the state space.
 #
 # A cubic spline is C^2 at an ordinary breakpoint, so a single breakpoint at
-# a = 0 cannot represent the kink. `kinked_breaks` (from the package) repeats
-# the breakpoint, which lowers the continuity there to C^1 and matches the
+# a = 0 cannot represent the kink. `insert_breaks` (from the package) inserts a
+# repeated breakpoint, which lowers the continuity there to C^1 and matches the
 # value function. Chebyshev polynomials and an evenly spaced spline both smear
 # the kink. This script compares them against a fine-grid reference.
 using ContinuousDPs
@@ -52,19 +52,19 @@ function evaluate(res)
     return [pf(p) for p in test_points], [vf(p) for p in test_points]
 end
 
+even_breaks(n) = SplineParams(range(a_min, a_max, length=n), 0, 3)
 x_ref, v_ref = evaluate(solve_with(
-    SplineParams(kinked_breaks(a_min, a_max, [0.0]; n=161), 0, 3)))
+    insert_breaks(even_breaks(160), [0.0]; multiplicity=2)))
 
 println("max abs error against the reference (a-direction basis size n)")
 for n in (24, 48)
     candidates = (
         "Chebyshev" => ChebParams(n, a_min, a_max),
-        "spline, even breaks" =>
-            SplineParams(kinked_breaks(a_min, a_max, (); n=n), 0, 3),
+        "spline, even breaks" => even_breaks(n),
         "spline, knot at 0 (x1)" =>
-            SplineParams(kinked_breaks(a_min, a_max, [0.0]; n=n, mult=1), 0, 3),
+            insert_breaks(even_breaks(n), [0.0]; multiplicity=1),
         "spline, knot at 0 (x2)" =>
-            SplineParams(kinked_breaks(a_min, a_max, [0.0]; n=n, mult=2), 0, 3),
+            insert_breaks(even_breaks(n), [0.0]; multiplicity=2),
     )
     for (label, params) in candidates
         x, v = evaluate(solve_with(params))
