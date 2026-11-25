@@ -9,9 +9,8 @@
 # tensor-product basis function formed by the first nonzero function of
 # every dimension
 @inline function _basis_row_parts(fec::FunEvalCache{N}, x) where N
-    firsts_nvals = ntuple(
-        d -> point_evalbase!(fec.caches[d], _coord(x, d)), Val(N)
-    )
+    # `map` over the cache tuple, not `caches[d]`: see `funeval_point!`
+    firsts_nvals = map(point_evalbase!, fec.caches, _coords(x, Val(N)))
     firsts = map(first, firsts_nvals)
     nvals = map(last, firsts_nvals)
     base = 1

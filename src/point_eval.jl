@@ -251,6 +251,10 @@ end
 @inline _coord(x::Real, d::Int) = x
 @inline _coord(x, d::Int) = @inbounds x[d]
 
+@inline _coords(x::Real, ::Val{1}) = (x,)
+@inline _coords(x::NTuple{N,Real}, ::Val{N}) where N = x
+@inline _coords(x, ::Val{N}) where N = ntuple(d -> @inbounds(x[d]), Val(N))
+
 """
     funeval_point!(fec::FunEvalCache{N}, C, x) -> Float64
 
@@ -273,12 +277,13 @@ using (and overwriting) the workspace `fec`. Equivalent to
 """
 function funeval_point!(fec::FunEvalCache{N}, C::AbstractVector{Float64},
                         x) where N
-    firsts_nvals = ntuple(
-        d -> point_evalbase!(fec.caches[d], _coord(x, d)), Val(N)
-    )
+    # `caches` is a heterogeneous tuple (one cache type per parameter type), so
+    # go through it with `map`, not a runtime index `caches[d]`: a dynamic
+    # index into it allocates (seen with Chebyshev x spline on Julia nightly)
+    firsts_nvals = map(point_evalbase!, fec.caches, _coords(x, Val(N)))
     firsts = map(first, firsts_nvals)
     nvals = map(last, firsts_nvals)
-    valvecs = ntuple(d -> fec.caches[d].vals, Val(N))
+    valvecs = map(c -> c.vals, fec.caches)
     strides = fec.strides
 
     base = 1
